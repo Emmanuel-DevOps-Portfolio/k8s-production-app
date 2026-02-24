@@ -11,34 +11,57 @@ Deploy a production-style 3-tier application on Kubernetes with scaling, observa
 - Nginx (Frontend)
 - PostgreSQL/MySQL (Database)
 
-## Architecture Diagram
-Include diagrams in `docs/architecture.png` and reference them here:
+## Architecture
+
+This project follows a standard 3-tier architecture:
+
+`User → NGINX → Backend → Database`
+
+- NGINX exposed via Kubernetes Service
+- Backend deployed as scalable Pods
+- Database backed by PersistentVolumeClaims
+- Internal communication via ClusterIP services and DNS
+
+## Architecture Diagram 
+`docs/architecture.png`
 ![Architecture](docs/architecture.png)
 
 ## Setup Instructions
 1. Clone the repo:
 ```bash
 git clone https://github.com/Emmanuel-DevOps-Portfolio/k8s-production-app.git
+cd k8s-production-app
 ```
-2. Apply manifests or Helm chart:
+2. Apply manifests
 ```bash
 kubectl apply -f manifests/
-# OR
+```
+# Or Using Helm 
+```bash
 helm install myapp charts/myapp
 ```
 3. Verify pods and services:
 ```bash
 kubectl get pods -n <namespace>
 kubectl get svc -n <namespace>
+kubectl get hpa -n <namespace>
 ```
-What I Learned
-- Designed workload isolation using Namespaces
-- Configured RBAC for principle-of-least-privilege access control
-- Implemented NetworkPolicies to restrict pod-to-pod communication
-- Implemented Horizontal Pod Autoscaler (HPA) for dynamic scaling
-- Debugged CrashLoopBackOff, readiness and liveness probe failures
-- Implemented service-to-pod communication using label selectors
-- Validated internal cluster networking and DNS-based service discovery
+
+## Production Features Implemented
+- Namespace-based workload isolation
+- RBAC enforcement using least-privilege principles
+- NetworkPolicies for pod-level traffic restriction
+- Horizontal Pod Autoscaler (HPA) for dynamic scaling
+- Liveness and readiness probes for health management
+- Service-to-Pod communication using label selectors
+- Internal cluster DNS validation
+- Observability with Prometheus and Grafana
+
+## Operational Debugging Experience
+- Diagnosed and resolved `CrashLoopBackOff` conditions
+- Troubleshot failed probe configurations
+- Validated service endpoints and selector alignment
+- Inspected pod events and controller reconciliation behavior
 
 ## Screenshots / Proof
 
